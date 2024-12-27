@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{adjustbox}
+\usepackage{bbm}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Var}[1]{\mathbb{V}\left[#1\right]}
+\newcommand{\dd}[1]{\frac{d}{d#1}}
+\newcommand{\image}[1]{\begin{minipage}[t]{\linewidth}
+      \raggedright
+      \adjustbox{valign=t}{
+        \includegraphics[width=.6\linewidth]{#1}
+      }
+      \medskip
+    \end{minipage}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+
+
+
+\title{Regression and Shrinking via the Lasso}
+\author{Asher Labovich}
+\date{December 2024}
+
+
+\begin{document}
+\maketitle 
+
+\textbf{Key idea: Constrain the sum of absolute values of the coefficients}. 
+In particular, we want to solve the problem \[
+(\hat{\alpha}, \hat{\beta}) = \underset{(\alpha, \beta)}{\arg \min} \sum_{i=1}^N (y_i - \alpha - \sum_{j=1}^p \beta_j x_{ij})^2 = \underset{(\alpha, \beta)}{\arg \min} ||\mathbf{y} - \mathbf{\alpha} - X\beta||^2 \text{  subject to} \sum_{i=1}^p |\beta_i| \leq t 
+\]
+\textbf{Why?} Because this can both efficiently select AND constrain coefficients.
+
+This problem can be equivalently formulated as \[
+\underset{(\alpha, \beta)}{\arg \min} L(\alpha, \beta) = \underset{(\alpha, \beta)}{\arg \min} ||\mathbf{y} - \mathbf{\alpha} - X\beta||^2 + \lambda \sum_{i=1}^p |\beta_i|
+\]
+Which is easier to work with computationally, and has a 1-to-1 correspondence between $\lambda$ and t. 
+
+If we normalize X so that $\sum_{i = 1}^N X_{ij} = 0, \sum_{i=1}^N X_{ij}^2 = 1 \forall j$ (mean 0, std 1), 
+then we see that $\frac{\partial L}{\partial \alpha} = 2(\sum_{i=1}^N y_i - \alpha - \sum_{j=1}^p B_j x_{ij}) = 0 \implies 
+n\alpha = \sum_{i=1}^N y_i + \sum_{j=1}^p \sum_{i=1}^N B_j x_{ij} \implies \alpha = \overline{y} +  \sum_{j=1}^p B_j \sum_{i=1}^N x_{ij} = \overline{y}$
+
+So, we can remove $\alpha = \overline{y}$ and just set $\overline{y} = 0$.
+
+With $\beta^0$ as the OLS estimates, we have that \begin{align*}
+    ||y - X\beta|| &= \\
+    ||(y - X\beta^0) + (X\beta^0 - X\beta)|| &= \\
+    [(y - X\beta^0) + (X\beta^0 - X\beta)]^T[(y - X\beta^0) + (X\beta^0 - X\beta)] &= \\
+    ||y - X\beta^0|| + ||(X\beta^0 - X\beta)|| + 2(X\beta^0 - X\beta)^T(y - X\beta^0) &= \\
+    ||y - X\beta^0|| + ||(X\beta^0 - X\beta)|| + 2(\beta^0 - \beta)^TX^T(y - X\beta^0) &= \\
+    ||y - X\beta^0|| + ||(X\beta^0 - X\beta)||
+\end{align*}
+(Note: $X^T(y - X\beta^0) = 0$ since $X^T(y - X\beta^0) = X^Ty - (X^TX)(X^TX)^{-1}X^Ty = X^Ty - X^Ty = 0$. Intuitively, this is because 
+linear regression projects y onto the column space of X, and thus the residuals are orthogonal to the column space
+of x, so $X^Tr = 0$ for r = $y - X\beta^0$).
+
+Since the first term is constant with respect to $\beta$, we have that the residual sum of squares \[
+||y - X\beta|| = a + ||X\beta^0 - X\beta|| = a + (\beta^0 - \beta)^TX^TX(\beta^0 - \beta)
+\] This has elliptical contours; e.g. when $||X\beta^0 - X\beta|| = c$, the shape is an ellipsoid. When $X^TX = I$ (orthonormal design matrix), then the ellipsoid contours are spherical. Otherwise, it is an ellipsoid stretched based on the eigenvalues of $X^TX$. 
+Since $X^TX$ is symmetric, it has an orthonormal eigenbasis. Consider any vector $v$ such that $vX^TXv$ = c. 
+Then, represent $v = \sum_{i=1}^p \alpha_i v_i$, where $v_i$ is an eigenvector. Then, we have that \begin{align*}
+    vX^TXv &= \\
+    (\sum_{i=1}^p \alpha_i v_i)X^TX(\sum_{i=1}^p \alpha_i v_i) &= \\
+    \sum_{i=1}^p \sum_{j=1}^p \alpha_i v_iX^TX \alpha_j v_j &= \\
+    \sum_{i=1}^p \sum_{j=1}^p \lambda_j \alpha_i \alpha_j v_i v_j &= \\
+    \sum_{i=1}^p \sum_{j=1}^p \lambda_j \alpha_i \alpha_j \delta_{ij} &= \\
+    \sum_{i=1}^p \lambda_j \alpha_i^2 &= c \implies \\
+    \sum_{i=1}^p \frac{\alpha_i^2}{\frac{1}{\lambda_j}} &= c
+\end{align*}
+
+So, each axis is scaled by $\frac{1}{\sqrt{\lambda_i}}$ (interestingly, the inverse singular values of X).
+
+The LASSO estimate occurs when $||\beta|| \leq t$, so when the ellipsoid intersects the rotated cube. This is likely to occur at a corner (when one or more coefficients are 0), whereas a ridge is not, since it intersects a sphere.
+
+In general, LASSO performs best when there are a small to moderate number of moderate effects, but performs much worse when there are many small effects (ridge does best) or very few large effects (subset selection performs best). 
+\image{images/lasso_ellipse.png}
+
+\end{document}
