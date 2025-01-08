@@ -1,6 +1,6 @@
 # MLPapers
 
-A list of all ML papers I want to read, and notes I've taken on each paper. Will be updated over time (probably quite slowly lol).
+A list of all ML papers I want to read, and notes I've taken on each paper. Some papers will not have notes, if they are significantly derivative of other papers I've read/written up.  Will be updated over time (probably quite slowly lol).
 
 **Generic Papers I find interesting and eventually want to read**
 
