@@ -8,7 +8,7 @@ A list of all ML papers I want to read, and notes I've taken on each paper. Will
 | ----------------------------------------------------------------------------------------------------------------------------------------- | ----- | ----- |
 | [Adam: A method for Stochastic Optimization](https://arxiv.org/abs/1412.6980)                                                                |       |       |
 | [The Curse of Dimensionality](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/dimensionality.pdf)                     |       |       |
-| [The Noble Eightfold Path to Linear Regression](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/LinearRegression.pdf) |       |       |
+| [The Noble Eightfold Path to Linear Regression](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/LinearRegression.pdf) |  ✅    | [here](Classic_ML_Papers/LinearRegression.pdf)   |
 | [Logistic Regression as Soft Perceptron Learning]()                                                                                          |       |       |
 | [Why the Normal Distribution?](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/Gaussian-distribution.pdf)             |       |       |
 | [The Secret Life of the Covariance Matrix](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/secretcovariance.pdf)      |       |       |
@@ -18,7 +18,7 @@ A list of all ML papers I want to read, and notes I've taken on each paper. Will
 | Paper Name/Link                                                                                                                                                                                       | Read? | Notes                            |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | -------------------------------- |
 | [Regression and Shrinkage via the Lasso](https://www.jstor.org/stable/2346178)                                                                                                                           | ✅    | [here](Classic_ML_Papers/Lasso.pdf) |
-| [Regularization and variable selection via the elastic net](https://doi.org/10.1111/j.1467-9868.2005.00503.x)                                                                                            |       |                                  |
+| [Regularization and variable selection via the elastic net](https://doi.org/10.1111/j.1467-9868.2005.00503.x)                                                                                            | ✅    |                                  |
 | [Classification and Regression Trees](https://pages.stat.wisc.edu/~loh/treeprogs/guide/wires11.pdf)                                                                                                      |       |                                  |
 | [Random Forests](https://link.springer.com/article/10.1023/A:1010933404324)                                                                                                                              |       |                                  |
 | [Adaboost Tutorial](https://www.inf.fu-berlin.de/inst/ag-ki/adaboost4.pdf)                                                                                                                               | ✅    |                                  |

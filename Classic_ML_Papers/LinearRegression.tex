@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{adjustbox}
+\usepackage{bbm}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\Var}[1]{\mathbb{V}\left[#1\right]}
+\newcommand{\dd}[1]{\frac{d}{d#1}}
+\newcommand{\image}[1]{\begin{minipage}[t]{\linewidth}
+      \raggedright
+      \adjustbox{valign=t}{
+        \includegraphics[width=.6\linewidth]{#1}
+      }
+      \medskip
+    \end{minipage}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+
+
+
+\title{The Noble Eightfold Path to Linear Regression}
+\author{Asher Labovich}
+\date{January 2025}
+
+\begin{document}
+\maketitle 
+
+\section{Introduction}
+Denote $x_i$ the vector of p measurements, $y_i$ the target response. 
+N data points are then denoted as $(x_i, y_i)_{i=1}^N$. 
+
+We want to approximate $y_i = \phi_0 + \sum_{j=1}^p \phi_j x_{ij} + e_i$, for all i.
+$e_i$ represents the residual for $y_i$. We want the vector $\Phi$ of coefficients
+so that $y = X\Phi + e$, where X has a vector of 1s at the left.
+
+The goal is to find $\Phi$ that minimizes $||e||_2^2|| = e^Te$. Thus, we want to minimize
+\[
+(y - X\Phi)^T(y - X\Phi) = \sum_{i=1}^N (y_i - \phi_0 - \sum_{j=1}^p \phi_j x_{ij})^2 
+\]
+
+\section{Solutions}
+
+\subsection{Partial Derivatives}
+We take the partial derivative of each $\phi_j$. Thus, we have that \begin{align*}
+    \frac{\partial ||e||}{\phi_0} &= -2\sum_{i=1}^N (y_i - \phi_0 - \sum_{j=1}^p \phi_j x_{ij}) &= 0 \\
+    \frac{\partial ||e||}{\phi_1} &= -2\sum_{i=1}^N x_{i1}(y_i - \phi_0 - \sum_{j=1}^p \phi_j x_{ij}) &= 0 \\
+    \frac{\partial ||e||}{\phi_{k \neq 0}} &= -2\sum_{i=1}^N x_{ik}(y_i - \phi_0 - \sum_{j=1}^p \phi_j x_{ij}) &= 0
+\end{align*}
+
+We can simplify these equations to get that \begin{align*}
+    \sum_{i=1}^N y_i &= \phi_0 \sum_{i=1}^N 1  + \sum_{i=1}^N \sum_{j=1}^p \phi_jx_{ij}\\
+    \sum_{i=1}^N y_ix_{ik} &= \phi_0 \sum_{i=1}^N x_{ik} + x_{ik}\sum_{i=1}^N \sum_{j=1}^p \phi_jx_{ij}
+\end{align*}
+Representing them a little nicer, we find that \begin{align*}
+    \sum_{i=1}^N y_i &= \phi_0 \sum_{i=1}^N 1  + \phi_1 \sum_{i=1}^N x_{i1} + \phi_2\sum_{i=1}^N x_{i2} + \hdots + \phi_p \sum_{i=1}^N x_{ip} \\
+    \sum_{i=1}^N y_i x_{i1} &= \phi_0 \sum_{i=1}^N x_{i1} + \phi_1 \sum_{i=1}^N x_{i1} x_{i1} + \phi_2 \sum_{i=1}^N x_{i2} x_{i1}  + \hdots + \phi_p \sum_{i=1}^N x_{ip}x_{i1} \\
+    \vdots & \vdots \\
+    \sum_{i=1}^N y_i x_{ip} &= \phi_0 \sum_{i=1}^N x_{ip} + \phi_1 \sum_{i=1}^N x_{i1} x_{ip} + \phi_2 \sum_{i=1}^N x_{i2} x_{ip}  + \hdots + \phi_p \sum_{i=1}^N x_{ip}x_{ip} 
+\end{align*}
+We recognize that the left side is equal to $X^Ty$. The right side is equal to $X^TX\Phi$. If $(X^TX)^{-1}$ exists, then
+we have that $\Phi = (X^TX)^{-1}X^Ty$.
+
+We note that $X^Ty = X^TX\Phi \implies X^T(y - X\Phi) = X^Te = 0$. Thus, 
+$\sum_{i=1}^N e_i = 0, \sum_{i=1}^N e_i x_{ip} = 0$ for all p. Quite cool!
+Regardless of the form of $y = f(x)$, the linear appoximation will always have
+residuals sum to zero, as well as weighted sum of residuals for any one variable over N sum to 0. 
+
+\subsection{Matrix Calculus}
+We have that $||e|| = (y - X\Phi)^T(y - X\Phi) = y^Ty - (X\Phi)^Ty - y^T(X\Phi) + \Phi^TX^TX\Phi$. Taking the vector derivative with respect to $\Phi$,
+we get that $\frac{\partial||e||}{\partial \mathbf{\Phi}} = 0 - 2X^Ty + 2X^TX\Phi = 0$. Thus, 
+we have that $\Phi = (X^TX)^{-1}X^Ty$, should the inverse exist.
+
+\subsection{Pseudoinverse}
+All matrices have a "pseudoinverse", a matrix $X^+$ fulfilling the following requirements:
+\begin{enumerate}
+    \item $X^+X$ and $XX^+$ are symmetric.
+    \item $XX^+X$ = X
+    \item $X^+XX^+ = X^+$
+\end{enumerate}
+We can reduce the equation for $||e||$ so that it equals \begin{align*}
+    (y - X\Phi)^T(y - X\Phi) &= \\
+    (XX^+y - XX^+y + y - X\Phi)^T(y - X\Phi) &= \\
+    (XX^+y - X\Phi)^T(y - X\Phi) + y^T(I - XX^+)^T(y - X\Phi) &= \\
+    (XX^+y - X\Phi)^T(y - X\Phi) + y^T(I - XX^+)^Ty - y^T(I - XX^+)^T(X\Phi) &= \\
+    (XX^+y - X\Phi)^T(y - X\Phi) + y^T(I - XX^+)^Ty - y^T(X - XX^+X)(\Phi) &= \\
+    (XX^+y - X\Phi)^T(y - X\Phi) + y^T(I - XX^+)^Ty - y^T(X - X)(\Phi) &= \\
+    (XX^+y - X\Phi)^T(y - X\Phi) + y^T(I - XX^+)y
+\end{align*}
+Since the second term is constant with respect to $\Phi$, we only care about minimizing
+the first term. Thus, \begin{align*}
+    (XX^+y - X\Phi)^T(y - X\Phi) &= \\
+    (X^+y - \Phi)^TX^T(y - X\Phi) &= \\
+    (X^+y - \Phi)^T((XX^+X)^Ty - X^TX\Phi) &= \\
+    (X^+y - \Phi)^T(X^TXX^+y - X^TX\Phi) &= \\
+    (X^+y - \Phi)^TX^TX(X^+y - \Phi) &= \\
+    ||X(X^+y - \Phi)|| &= \\
+    ||X|| ||X^+y - \Phi||
+\end{align*}
+
+This is minimized when $\Phi = X^+y$. When $(X^TX)^{-1}$ exists, then $X^+ = (X^TX)^{-1}X^T$.
+However, this is quite a bit broader than the previous solution 
+(and something I didn't know when starting this! Of course, this doesn't 
+solve the problem of there still being infinite solns when $X^TX$ is singular)
+
+\subsection{Statistical Approach}
+I skip this section since it is better covered in the next. 
+
+\subsection{Normal Projection Approach}
+If we think of the columns of X as vectors in an (n+1)-dimensional space, 
+we want to project y onto the column space of X with as little error as possible.
+$\Phi$ gives us this lowest error. This error must be orthogonal to the 
+column space of X, or else there would be a better projection. 
+
+So, each column of X must have an inner product of 0 with e. So, $X^Te = 0$. 
+We thus know that \[
+0 = X^Te = X^T(y - X\Phi) = X^Ty - X^TX\Phi \implies \Phi = (X^TX)^{-1}X^Ty\]
+
+\subsection{Physics Approach}
+We can think of each point as the end of a spring connected to the line 
+underneath them, in (n+1)-dimensional space. (Important: they cannot
+be slanted, they must be parallel to the "n+1"th dimension, or the dimension
+with y-coordinates). Then, the force of each spring is proportional to $e_i$, 
+the distance of the spring to the line. For the line to be in equilibrium, 
+we have that the forces must sum to 0 in every dimension. So, 
+$\sum_{i=1}^n e_i = 0$ and $\sum_{i=1}^n e_ix_{ij} = 0$. Therefore, 
+$X^Te = 0$, so \[
+e = y - X\Phi \implies X^Te = X^Ty - X^TX\Phi \implies \Phi = (X^TX)^{-1}X^Ty
+\]
+
+\end{document}
