@@ -1,5 +1,6 @@
 # MLPapers and Replications
 
+
 A list of all of the underlying math and replications I've been working on. This will be updated (probably rather slowly) -- goal is to finish everything by ~May? I hope? For each paper, I'm either going to write a note or code the algorithm from scratch in numpy.
 
 This repository is NOT meant for general use -- it's more for my learning purposes, so I can be sure I **completely** understand the math of every one of the algorithms I'm using. If possible, I'd like to never again use an algorithm I don't know how to code with numpy alone.
