@@ -25,7 +25,8 @@ y = dataframe['Churn']
 
 tree = Tree(min_samples = 2, max_depth = 3)
 tree.train(X, y)
+#print(tree.predict(X))
 
 forest = RandomForestClassifier()
 forest.train(X, y)
-forest.predict(X)
+print(forest.predict(X))

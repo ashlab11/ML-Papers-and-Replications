@@ -25,7 +25,6 @@ class RandomForestClassifier:
         predictions = []
         for tree in self.trees:
             predictions.append(tree.predict(X_predict))
-        print(predictions)
         return st.mode(predictions)[0]
     
 class RandomForestRegressor:
