@@ -1,17 +1,31 @@
-# MLPapers
+# MLPapers and Replications
 
-A list of all ML papers I want to read, and notes I've taken on each paper. Will be updated over time (probably quite slowly lol).
+A list of all of the underlying math and replications I've been working on. This will be updated (probably rather slowly) -- goal is to finish everything by ~May? I hope? For each paper, I'm either going to write a note or code the algorithm from scratch in numpy.
+
+This repository is NOT meant for general use -- it's more for my learning purposes, so I can be sure I **completely** understand the math of every one of the algorithms I'm using. If possible, I'd like to never again use an algorithm I don't know how to code with numpy alone.
+
+**Replications and ML from Scratch**
+
+All can be found in the [ML From Scratch](ML_From_Scratch) directory
+
+| Algorithm                 | Finished? | Any notes?                                                                                          |
+| ------------------------- | --------- | --------------------------------------------------------------------------------------------------- |
+| Feed-Forward Neural Nets  | ✅        | Haven't implemented batch inputs yet, going to see if I need it as I work towards AlexNet           |
+| Convolutional Neural Nets |           | My next project, will be done by this week (or so I tell myself...)                                 |
+| CART                      | ✅        |                                                                                                     |
+| Random Forest             | ✅        | Only did classification, since regression is essentially the same thing (wanted to try one of each) |
+| Gradient Boosted Trees    | ✅        | Only did regression, since classification is essentially the same thing.                            |
 
 **Generic Papers I find interesting and eventually want to read**
 
-| Paper Name/Link                                                                                                                           | Read? | Notes |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | ----- | ----- |
-| [Adam: A method for Stochastic Optimization](https://arxiv.org/abs/1412.6980)                                                                |       |       |
-| [The Curse of Dimensionality](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/dimensionality.pdf)                     |       |       |
-| [The Noble Eightfold Path to Linear Regression](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/LinearRegression.pdf) |  ✅    | [here](Classic_ML_Papers/LinearRegression.pdf)   |
-| [Logistic Regression as Soft Perceptron Learning]()                                                                                          |       |       |
-| [Why the Normal Distribution?](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/Gaussian-distribution.pdf)             |       |       |
-| [The Secret Life of the Covariance Matrix](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/secretcovariance.pdf)      |       |       |
+| Paper Name/Link                                                                                                                           | Read? | Notes                                       |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ----- | ------------------------------------------- |
+| [Adam: A method for Stochastic Optimization](https://arxiv.org/abs/1412.6980)                                                                |       |                                             |
+| [The Curse of Dimensionality](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/dimensionality.pdf)                     |       |                                             |
+| [The Noble Eightfold Path to Linear Regression](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/LinearRegression.pdf) | ✅    | [here](Classic_ML_Papers/LinearRegression.pdf) |
+| [Logistic Regression as Soft Perceptron Learning]()                                                                                          |       |                                             |
+| [Why the Normal Distribution?](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/Gaussian-distribution.pdf)             |       |                                             |
+| [The Secret Life of the Covariance Matrix](https://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/secretcovariance.pdf)      |       |                                             |
 
 **Classic ML Papers**
 
@@ -31,13 +45,3 @@ A list of all ML papers I want to read, and notes I've taken on each paper. Will
 | [SMOTE: Synthetic Minority Over-sampling Technique](https://www.jair.org/index.php/jair/article/view/10302/24590)                                                                                        |       |                                  |
 | [Nearest Neighbor Pattern Classification](https://ieeexplore.ieee.org/document/1053964)                                                                                                                  |       |                                  |
 | [The Strength of Weak Learnability](http://rob.schapire.net/papers/strengthofweak.pdf)                                                                                                                   |       |                                  |
-
-# **DL Papers**
-
-I probably won't give notes for most of these, but the replications will be in DL Papers
-
-| Paper Name/Link | Read? | Notes / Replications |
-| --------------- | ----- | -------------------- |
-|                 |       |                      |
-|                 |       |                      |
-|                 |       |                      |
