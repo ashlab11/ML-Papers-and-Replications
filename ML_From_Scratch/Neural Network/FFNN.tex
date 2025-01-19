@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage{derivative}
+
+\title{Neural Networks Math}
+\author{Asher Labovich}
+\date{November 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+L layers, weights are defined as $w_{jk}^l$ in = weight going from neuron j in layer (l - 1) to neuron k in layer (l). $n_l$ = number of neurons in layer l
+
+\section*{Dimensions}
+W = n x m matrix, with n = number of neurons in layer (l-1), m number of neurons in layer l.
+
+$\delta$ = 1 x n matrix 
+
+$z_l$ = 1 x n matrix
+
+\section*{The Four Fundamental Theorems of Feed-Forward Networks}
+
+\begin{enumerate}
+    \item \textbf{Output Layer Error:}
+    \[
+    \delta^L = \frac{\partial C}{\partial z^L} = \nabla C \odot \sigma'(z^L)
+    \]
+
+    \item \textbf{Hidden Layer Error:}
+    \[
+    \delta^l = (\delta^{l+1} W^{l+1}) \odot \sigma'(z^l)
+    \]
+
+    \item \textbf{Gradient of Cost w.r.t Weights:}
+    \[
+    \frac{\partial C}{\partial W^l} = (a^{l-1})^T \delta_l
+    \]
+
+    \item \textbf{Gradient of Cost w.r.t Biases:}
+    \[
+    \frac{\partial C}{\partial b^l} = \delta^l
+    \]
+\end{enumerate}
+
+\section*{Explanation of Notation}
+
+\begin{itemize}
+    \item \( C \) is the cost function.
+    \item \( \delta^L \) and \( \delta^l \) represent the error in the output layer and the \( l \)-th hidden layer, respectively.
+    \item \( \sigma'(z^l) \) is the derivative of the activation function applied to \( z^l \).
+    \item \( W^l \) and \( b^l \) are the weights and biases for the \( l \)-th layer.
+    \item \( \nabla C \) represents the gradient of the cost function.
+    \item \( a^{l-1} \) represents the activations from the previous layer.
+    \item \( \odot \) represents the element-wise (Hadamard) product.
+\end{itemize}
+
+\section*{Formula 1: Final Layer}
+$\delta_j^L = \pdv{C}{z_j^L} = \pdv{C}{\sigma(z_j^L)} \pdv{\sigma(z_j^L)}{z_j^L} = \pdv{C}{a_j^L} \sigma^\prime(z_j^L)$
+
+So, 
+$\delta^L = \pdv{C}{z^L} = \nabla C \odot \sigma^\prime(z^L)$
+
+\section*{Formula 2: Previous Layer}
+\begin{align*}
+    \delta_j^l &= \\
+    \pdv{C}{z_j^l} &= \\
+    \sum_{k=1}^{n_{l+1}} \pdv{C}{z_k^{l+1}} \pdv{z_k^{l+1}}{z_j^l} &= \\ \sum_{k=1}^{n_{l+1}} \delta_k^l \pdv{z_k^{l+1}}{\sigma_k(z_j^l)} \pdv{\sigma_l(z_j^l)}{z_j^l} &= \\
+    \sum_{k=1}^{n_{l+1}} \delta_k^{l+1} \sigma^\prime_l(z_j^l) \pdv{z_k^{l+1}}{a_j^l} &= \\
+    \sum_{k=1}^{n_{l+1}} \delta_k^{l+1} \sigma^\prime_l(z_j^l) \pdv{\sum_{m=1}^{n_l} w_{mk}^{l+1}a_m^l + B_k^{l+1}}{a_j^l} &= \\
+    \sum_{k=1}^{n_{l+1}} \delta_k^{l+1} \sigma^\prime_l(z_j^l) w^{l+1}_{jk} &= \\
+    \sigma^\prime_l(z_j^l) \sum_{k=1}^{n_{l+1}} \delta_k^{l+1}  w^{l+1}_{jk} &= \\
+    \sigma^\prime_l(z_j^l) \delta^{l+1} w_{j:}^{l+1}
+\end{align*}
+
+So, $\delta^l = \delta^{l+1} W^{{l+1}^T} \odot \; \sigma^\prime_l(z^l)$
+
+\section*{Formula 3: Weights}
+$\pdv{C}{w^l_{kj}} = \pdv{C}{z_j^l} \pdv{z_j^l}{w^l_{kj}} = \delta_j^l \pdv{\sum_{i = 1}^{n_{l-1}} w^l_{ij}a^{l-1}_i + B_j^l}{w^l_{kj}} = \delta_j^l a^{l-1}_k$
+
+
+\begingroup
+\renewcommand*{\arraystretch}{1.5}
+So, W = $\begin{bmatrix}
+    \delta_1^l a_1^{l-1} & \delta_2^l a_1^{l-1} & \delta_3^l a_1^{l-1} \\
+    \delta_1^l a_2^{l-1} & \delta_2^l a_2^{l-1} & \delta_3^l a_2^{l-1} \\
+    \delta_1^l a_3^{l-1} & \delta_2^l a_3^{l-1} & \delta_3^l a_3^{l-1}
+\end{bmatrix}$ = $(a^{l-1})^T \delta_l$
+\endgroup
+
+\section*{Formula 4: Bias}
+$\pdv{C}{B_j^l} = \pdv{C}{z_j^l} \pdv{z_j^l}{B_j^l} = \delta^l_j \pdv{z_j^l}{B_j^l} = \delta^l_j \pdv{\sum_{i = 1}^{n_{l-1}} w^l_{ij}a^{l-1}_i + B_j^l}{B_j^l} = \delta^l_j$. 
+
+So, $\pdv{C}{B^l} = \delta_l$
+
+
+\end{document}
